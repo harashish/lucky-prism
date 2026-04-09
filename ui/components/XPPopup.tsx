@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import AppText from "./AppText";
-import { useGamificationStore } from "../../app/gamification/gamification.store";
+import { useGamificationStore } from "../../features/gamification/gamification.store";
 import { colors } from "../theme";
 
 export default function XPPopup() {

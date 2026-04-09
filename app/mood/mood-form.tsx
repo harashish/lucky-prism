@@ -1,19 +1,19 @@
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 import AppText from "../../ui/components/AppText";
-import { useMoodStore } from "./mood.store";
+import { useMoodStore } from "../../features/mood/mood.store";
 import { colors, radius, spacing } from "../../ui/theme";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { EMOTIONS } from "./mood.constants";
+import { EMOTIONS } from "../../features/mood/mood.constants";
 import { confirmDelete } from "../../ui/components/confirmDelete";
 import FormErrorModal from "../../ui/components/FormErrorModal";
 import { SelectChips } from "../../ui/components/SelectChips";
 import FormButton from "../../ui/components/FormButton";
-import { MOODS } from "./mood.constants";
+import { MOODS } from "../../features/mood/mood.constants";
 import FormSection from "../../ui/components/FormSection";
 import FormField from "../../ui/components/FormField";
-import { moodRepo } from "./mood.repo";
+import { moodRepo } from "../../features/mood/mood.repo";
 
 // MOODS is a readonly array (because of "as const")
 // SelectChips expects a mutable array (T[])
@@ -92,9 +92,7 @@ export default function MoodFormScreen() {
   const handleSubmit = () => {
     const formattedDate = date.toISOString().slice(0, 10);
 
-    const existingForDate = entries.find(
-      e => e.date === formattedDate
-    );
+    const existingForDate = moodRepo.getByDate(formattedDate);
 
     // prevent duplicate day
     if (!existing && existingForDate) {

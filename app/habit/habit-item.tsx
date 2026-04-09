@@ -3,7 +3,7 @@ import { View, Pressable } from "react-native";
 import AppText from "../../ui/components/AppText";
 import { colors, radius, spacing } from "../../ui/theme";
 import { useRouter } from "expo-router";
-import { Habit } from "./habit.repo";
+import { Habit } from "../../features/habit/habit.repo";
 
 type HabitProps = {
   item: Habit & { days?: any[] };
@@ -49,7 +49,8 @@ export default function HabitItem({ item, onToggleToday, onToggleDay }: HabitPro
         </View>
 
         <Pressable
-          onLongPress={() => router.push(`/habit/${item.id!}`)}
+            onPress={() => onToggleToday(item.id!)}
+            onLongPress={() => router.push(`/habit/${item.id!}`)}
           style={{
             width: 38,
             height: 38,

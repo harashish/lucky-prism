@@ -37,7 +37,7 @@ export const buildMonthDays = (
   return result;
 };
 
-// Calculate streak for single habit
+// calculate streak for single habit
 
 export const calculateHabitStreak = (days: { date: string; status: number }[]) => {
   const sorted = [...days].sort((a, b) => a.date.localeCompare(b.date));

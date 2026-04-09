@@ -2,14 +2,14 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { View, TouchableOpacity, FlatList, Alert } from "react-native";
 import AppText from "../../ui/components/AppText";
 import { colors, radius } from "../../ui/theme";
-import { useGoalStore } from "../goal/goal.store";
+import { useGoalStore } from "../../features/goal/goal.store";
 import { useFocusEffect, useRouter } from "expo-router";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
 import FloatingButton from "../../ui/components/FloatingButton";
 import GoalItem from "../goal/goal-item";
 import SectionLabel from "../../ui/components/SectionLabel";
-import { calculateGoalProgress, calculateTimeProgress, groupGoalsByPeriod } from "../goal/goal.service";
+import { calculateGoalProgress, calculateTimeProgress, groupGoalsByPeriod } from "../../features/goal/goal.service";
 
 dayjs.extend(isoWeek);
 

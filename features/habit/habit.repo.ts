@@ -62,46 +62,47 @@ export const habitRepo = {
     return rows.map(mapHabit);
   },
 
-    getById: (id: number): Habit | null => {
-        return getOne(
-          `SELECT * FROM habits WHERE id = ?`,
-          [id]
-        );
-      },
+  getById: (id: number): Habit | null => {
+    const row = getOne(
+      `SELECT * FROM habits WHERE id = ?`,
+      [id]
+    );
 
+    return row ? mapHabit(row) : null;
+  },
 
-upsert: (data: Habit) => {
-  run(
-    `
-    INSERT INTO habits (
-      id,
-      title, description, motivation_reason,
-      floor_goal, target_goal, ceiling_goal,
-      color, difficulty, is_active
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
-    ON CONFLICT(id) DO UPDATE SET
-      title = excluded.title,
-      description = excluded.description,
-      motivation_reason = excluded.motivation_reason,
-      floor_goal = excluded.floor_goal,
-      target_goal = excluded.target_goal,
-      ceiling_goal = excluded.ceiling_goal,
-      color = excluded.color,
-      difficulty = excluded.difficulty
-    `,
-    [
-      data.id ?? null,
-      data.title,
-      data.description || "",
-      data.motivation_reason,
-      data.floor_goal || "",
-      data.target_goal || "",
-      data.ceiling_goal || "",
-      data.color,
-      data.difficulty,
-    ]
-  );
+  upsert: (data: Habit) => {
+    run(
+      `
+      INSERT INTO habits (
+        id,
+        title, description, motivation_reason,
+        floor_goal, target_goal, ceiling_goal,
+        color, difficulty, is_active
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+      ON CONFLICT(id) DO UPDATE SET
+        title = excluded.title,
+        description = excluded.description,
+        motivation_reason = excluded.motivation_reason,
+        floor_goal = excluded.floor_goal,
+        target_goal = excluded.target_goal,
+        ceiling_goal = excluded.ceiling_goal,
+        color = excluded.color,
+        difficulty = excluded.difficulty
+      `,
+      [
+        data.id ?? null,
+        data.title,
+        data.description || "",
+        data.motivation_reason,
+        data.floor_goal || "",
+        data.target_goal || "",
+        data.ceiling_goal || "",
+        data.color,
+        data.difficulty,
+      ]
+    );
 },
 
   // Soft delete (keeps history)

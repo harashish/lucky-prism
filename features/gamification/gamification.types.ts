@@ -1,8 +1,8 @@
-import { Period } from "../goal/goal.types";
+import { Period } from "../../features/goal/goal.types";
 import { Difficulty } from "./difficulty";
 
 export type GamificationEvent =
-  | { type: "MOOD_LOGGED"; difficulty: Difficulty }
+  | { type: "MOOD_LOGGED"; difficulty: Difficulty; streak?: number }
   | { type: "HABIT_COMPLETED"; difficulty: Difficulty; streak?: number }
   | { type: "GOAL_COMPLETED"; difficulty: Difficulty; period: Period }
 

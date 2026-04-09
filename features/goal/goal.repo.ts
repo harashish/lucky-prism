@@ -1,4 +1,4 @@
-import { db } from "../../core/db/db";
+import { getAll, getOne, run } from "../../core/db/db";
 import { Difficulty } from "../gamification/difficulty";
 import { Period } from "./goal.types";
 
@@ -51,81 +51,81 @@ export const goalRepo = {
 
     query += ` ORDER BY created_at DESC`;
 
-    return db.getAllSync<Goal>(query, params);
+    return getAll(query, params);
   },
 
   getSteps(goalId: number): GoalStep[] {
-    return db.getAllSync(
+    return getAll<GoalStep>(
       `SELECT * FROM goal_steps WHERE goal_id = ? ORDER BY "order" ASC`,
       [goalId]
     );
   },
 
-  getById(id: number): Goal | undefined {
-    const res = db.getFirstSync<Goal>(
+  getById: (id: number): Goal | null => {
+    const row = getOne(
       `SELECT * FROM goals WHERE id = ?`,
       [id]
     );
 
-    return res ?? undefined;
+    return row ?? null;
   },
 
-insert(goal: Goal): number {
-  const now = new Date().toISOString();
+  insert(goal: Goal): number {
+    const now = new Date().toISOString();
 
-  const result = db.runSync(
-    `
-    INSERT INTO goals (
-      title, description, motivation_reason,
-      floor_goal, target_goal, ceiling_goal,
-      period, difficulty,
-      is_completed, is_archived,
-      created_at, updated_at
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?)
-    `,
-    [
-      goal.title,
-      goal.description,
-      goal.motivation_reason,
-      goal.floor_goal ?? "",
-      goal.target_goal ?? "",
-      goal.ceiling_goal ?? "",
-      goal.period,
-      goal.difficulty,
-      now,
-      now,
-    ]
-  );
+    const result = run(
+      `
+      INSERT INTO goals (
+        title, description, motivation_reason,
+        floor_goal, target_goal, ceiling_goal,
+        period, difficulty,
+        is_completed, is_archived,
+        created_at, updated_at
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?)
+      `,
+      [
+        goal.title,
+        goal.description,
+        goal.motivation_reason,
+        goal.floor_goal ?? "",
+        goal.target_goal ?? "",
+        goal.ceiling_goal ?? "",
+        goal.period,
+        goal.difficulty,
+        now,
+        now,
+      ]
+    );
 
-  return result.lastInsertRowId as number;
-},
+    return result.lastInsertRowId as number;
+  },
 
   update(id: number, data: Partial<Goal>) {
     const fields = Object.keys(data)
       .map((k) => `${k} = ?`)
       .join(", ");
 
-    db.runSync(
+    run(
       `UPDATE goals SET ${fields}, updated_at = ? WHERE id = ?`,
       [...Object.values(data), new Date().toISOString(), id]
     );
   },
 
   delete(id: number) {
-    db.runSync(`DELETE FROM goals WHERE id = ?`, [id]);
-    db.runSync(`DELETE FROM goal_steps WHERE goal_id = ?`, [id]);
+    run(`DELETE FROM goals WHERE id = ?`, [id]);
+    run(`DELETE FROM goal_steps WHERE goal_id = ?`, [id]);
   },
 
   complete(id: number) {
-    db.runSync(
+    run(
       `UPDATE goals SET is_completed = 1, completed_at = ? WHERE id = ?`,
       [new Date().toISOString(), id]
     );
   },
 
   toggleArchive(id: number, isArchived: number) {
-    db.runSync(
+    run(
       `
       UPDATE goals
       SET is_archived = ?, 
@@ -146,14 +146,14 @@ insert(goal: Goal): number {
   // ===== STEPS =====
 
   addStep(goalId: number, title: string) {
-    const max = db.getFirstSync<{ max: number }>(
+    const max = getOne<{ max: number }>(
       `SELECT MAX("order") as max FROM goal_steps WHERE goal_id = ?`,
       [goalId]
     );
 
     const order = (max?.max ?? -1) + 1;
 
-    db.runSync(
+    run(
       `
       INSERT INTO goal_steps (goal_id, title, is_completed, "order", created_at)
       VALUES (?, ?, 0, ?, ?)
@@ -163,7 +163,7 @@ insert(goal: Goal): number {
   },
 
   toggleStep(stepId: number) {
-    db.runSync(
+    run(
       `
       UPDATE goal_steps
       SET is_completed = CASE WHEN is_completed = 1 THEN 0 ELSE 1 END
@@ -174,13 +174,13 @@ insert(goal: Goal): number {
   },
 
   updateStep(stepId: number, title: string) {
-    db.runSync(
+    run(
       `UPDATE goal_steps SET title = ? WHERE id = ?`,
       [title, stepId]
     );
   },
 
   deleteStep(stepId: number) {
-    db.runSync(`DELETE FROM goal_steps WHERE id = ?`, [stepId]);
+    run(`DELETE FROM goal_steps WHERE id = ?`, [stepId]);
   },
 };

@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { useHabitStore } from "../habit/habit.store";
+import { useHabitStore } from "../../features/habit/habit.store";
 import AppText from "../../ui/components/AppText";
 import { colors } from "../../ui/theme";
 import { useRouter } from "expo-router";

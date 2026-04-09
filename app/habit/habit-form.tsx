@@ -1,7 +1,7 @@
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 import AppText from "../../ui/components/AppText";
-import { useHabitStore } from "./habit.store";
+import { useHabitStore } from "../../features/habit/habit.store";
 import { colors, spacing, radius } from "../../ui/theme";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import FormErrorModal from "../../ui/components/FormErrorModal";
@@ -9,9 +9,9 @@ import { confirmDelete as confirmDelete } from "../../ui/components/confirmDelet
 import FormField from "../../ui/components/FormField";
 import { SelectChips } from "../../ui/components/SelectChips";
 import FormButton from "../../ui/components/FormButton";
-import { DIFFICULTIES, Difficulty } from "../gamification/difficulty";
+import { DIFFICULTIES, Difficulty } from "../../features/gamification/difficulty";
 import FormSection from "../../ui/components/FormSection";
-import { habitRepo } from "./habit.repo";
+import { habitRepo } from "../../features/habit/habit.repo";
 import FormToggleSection from "../../ui/components/FormToggleSelection";
 
 const difficulties = Object.keys(DIFFICULTIES) as Difficulty[];

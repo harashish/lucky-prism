@@ -9,8 +9,11 @@ export const db = SQLite.openDatabaseSync("app_v3.db");
 RUN (INSERT / UPDATE / DELETE)
 ========================
 */
-export const run = (query: string, params: any[] = []) => {
-  db.runSync(query, params);
+export const run = (
+  query: string,
+  params: any[] = []
+): SQLite.SQLiteRunResult => {
+  return db.runSync(query, params);
 };
 
 /*

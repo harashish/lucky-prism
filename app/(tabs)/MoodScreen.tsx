@@ -1,12 +1,12 @@
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { useState, useCallback, useMemo } from "react";
-import { useMoodStore } from "../mood/mood.store";
+import { useMoodStore } from "../../features/mood/mood.store";
 import { colors, spacing } from "../../ui/theme";
 import FloatingButton from "../../ui/components/FloatingButton";
 import { useRouter, useFocusEffect } from "expo-router";
 import AppText from "../../ui/components/AppText";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MOOD_COLORS } from "../mood/mood.constants";
+import { MOOD_COLORS } from "../../features/mood/mood.constants";
 
 // poza komponentem, bo to stała + typ, nie zależy od renderu
 // gdyby było w środku to było by tworzone przy każdym renderze, a tak jest tylko raz

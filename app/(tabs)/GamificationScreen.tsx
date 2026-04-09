@@ -1,6 +1,6 @@
 import { View, ScrollView } from "react-native";
 import AppText from "../../ui/components/AppText";
-import { useGamificationStore } from "../gamification/gamification.store";
+import { useGamificationStore } from "../../features/gamification/gamification.store";
 import { colors, spacing, radius } from "../../ui/theme";
 import SectionLabel from "../../ui/components/SectionLabel";
 

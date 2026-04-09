@@ -1,7 +1,7 @@
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 import AppText from "../../ui/components/AppText";
-import { useGoalStore } from "./goal.store";
+import { useGoalStore } from "../../features/goal/goal.store";
 import { colors, spacing, radius } from "../../ui/theme";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import FormErrorModal from "../../ui/components/FormErrorModal";
@@ -11,9 +11,9 @@ import { SelectChips } from "../../ui/components/SelectChips";
 import FormButton from "../../ui/components/FormButton";
 import FormSection from "../../ui/components/FormSection";
 import FormToggleSection from "../../ui/components/FormToggleSelection";
-import { DIFFICULTIES, Difficulty } from "../gamification/difficulty";
-import { PERIODS, Period } from "./goal.types";
-import { goalRepo } from "./goal.repo";
+import { DIFFICULTIES, Difficulty } from "../../features/gamification/difficulty";
+import { PERIODS, Period } from "../../features/goal/goal.types";
+import { goalRepo } from "../../features/goal/goal.repo";
 
 const difficulties = Object.keys(DIFFICULTIES) as Difficulty[];
 const periods = Object.keys(PERIODS) as Period[];

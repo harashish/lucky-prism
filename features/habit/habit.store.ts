@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { habitRepo, Habit } from "./habit.repo";
-import { getNextStatus, buildMonthDays, calculateHabitStreak, getHabitCompletionContext } from "./habit.service";
+import { buildMonthDays, getHabitCompletionContext } from "./habit.service";
 import { awardXp } from "../gamification/gamification.service";
 
 // Zustand store for habits Handles business logic + state
@@ -67,7 +67,7 @@ export const useHabitStore = create<HabitState>((set, get) => ({
     const newStatus =
       typeof status !== "undefined"
         ? status
-        : getNextStatus(existing?.status ?? 0);
+        : (existing?.status === 2 ? 1 : 2);
 
       if (newStatus === 2 && !existing?.xp_awarded) {
 

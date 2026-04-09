@@ -1,10 +1,10 @@
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useMoodStore } from "./mood.store";
+import { useMoodStore } from "../../features/mood/mood.store";
 import AppText from "../../ui/components/AppText";
 import { colors, spacing, radius } from "../../ui/theme";
-import { EMOTIONS } from "./mood.constants";
-import { MOOD_COLORS } from "./mood.constants";
+import { EMOTIONS } from "../../features/mood/mood.constants";
+import { MOOD_COLORS } from "../../features/mood/mood.constants";
 
 const formatDate = (date: string) =>
   new Date(date).toLocaleDateString("en-GB", {

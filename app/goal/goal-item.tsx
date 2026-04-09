@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from "react-native";
 import AppText from "../../ui/components/AppText";
 import { colors, radius, spacing } from "../../ui/theme";
 import { Ionicons } from "@expo/vector-icons";
-import { Difficulty } from "../gamification/difficulty";
+import { Difficulty } from "../../features/gamification/difficulty";
 
 type GoalItemProps = {
   item: any;
