@@ -16,7 +16,7 @@ import FormToggleSection from "../../ui/components/FormToggleSelection";
 
 const difficulties = Object.keys(DIFFICULTIES) as Difficulty[];
 
-const colorPalette = [
+/*const colorPalette = [
   "#908bab",
   "#E5FE86",
   "#825BA5",
@@ -24,6 +24,16 @@ const colorPalette = [
   "#E4BEE6",
   "#EA97DC",
   "#A0B4EF",
+];*/
+
+const colorPalette = [
+  "#9487b9",
+  "#87b987",
+  "#87adb9",
+  "#b98787",
+  "#b9b687",
+  "#b987b5",
+  "rgb(181, 160, 239)",
 ];
 
 export default function HabitFormScreen() {
@@ -227,7 +237,10 @@ export default function HabitFormScreen() {
 
       <FormSection title="Difficulty">
         <SelectChips
-          options={difficulties}
+          options={difficulties.map(d => ({
+            value: d,
+            label: d,
+          }))}
           selected={difficulty}
           onSelect={setDifficulty}
         />

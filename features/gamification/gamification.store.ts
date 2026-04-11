@@ -28,17 +28,28 @@ type GamificationState = {
   clearXpPopup: () => void;
 
   setMultiplier: (value: number) => void;
+
+  init: () => void;
 };
 
-const initial = gamificationRepo.getState();
-
 export const useGamificationStore = create<GamificationState>((set, get) => ({
-  totalXp: initial.total_xp,
-  currentLevel: initial.current_level,
-  xpMultiplier: initial.xp_multiplier,
-  logs: gamificationRepo.getLogs(),
-
+  totalXp: 0,
+  currentLevel: 1,
+  xpMultiplier: 1,
+  logs: [],
   xpPopup: null,
+
+  init: () => {
+    const state = gamificationRepo.getState();
+    const logs = gamificationRepo.getLogs();
+
+    set({
+      totalXp: state.total_xp,
+      currentLevel: state.current_level,
+      xpMultiplier: state.xp_multiplier,
+      logs,
+    });
+  },
 
 addXp: (xp, source = "unknown") => {
   if (xp <= 0) return 0;

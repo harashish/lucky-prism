@@ -1,5 +1,6 @@
 import { getAll, getOne, run } from "../../core/db/db";
 import { Difficulty } from "../gamification/difficulty";
+import { Priority } from "../gamification/priority";
 import { Period } from "./goal.types";
 
 export interface GoalStep {
@@ -24,6 +25,7 @@ export interface Goal {
 
   period: Period;
   difficulty: Difficulty;
+  priority?: Priority;
 
   is_completed: number;
   completed_at?: string | null;
@@ -78,11 +80,11 @@ export const goalRepo = {
       INSERT INTO goals (
         title, description, motivation_reason,
         floor_goal, target_goal, ceiling_goal,
-        period, difficulty,
+        period, difficulty, priority,
         is_completed, is_archived,
         created_at, updated_at
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?)
       `,
       [
         goal.title,
@@ -93,6 +95,7 @@ export const goalRepo = {
         goal.ceiling_goal ?? "",
         goal.period,
         goal.difficulty,
+        goal.priority ?? null,
         now,
         now,
       ]

@@ -42,7 +42,7 @@ export default function FormErrorModal({ visible, message, onClose }: Props) {
           <TouchableOpacity
             onPress={onClose}
             style={{
-              backgroundColor: colors.buttonActive,
+              backgroundColor: colors.buttonConfirm,
               padding: spacing.m,
               borderRadius: radius.md,
               alignItems: "center",

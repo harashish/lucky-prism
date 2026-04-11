@@ -146,9 +146,12 @@ export default function MoodFormScreen() {
         keyboardShouldPersistTaps="handled"
       >
         {/* MOOD */}
-        <FormSection title="Mood">
+        <FormSection>
           <SelectChips
-            options={moods}
+            options={moods.map(m => ({
+              value: m,
+              label: m,
+            }))}
             selected={mood}
             onSelect={setMood}
           />

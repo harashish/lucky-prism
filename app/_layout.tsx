@@ -5,18 +5,20 @@ import { useEffect, useState } from "react";
 import { initDb } from "../core/db/init";
 import { View, ActivityIndicator } from "react-native";
 import XPPopup from "../ui/components/XPPopup";
+import { useGamificationStore } from "../features/gamification/gamification.store";
+
+import { useFonts } from "expo-font";
+import { fontsToLoad } from "../ui/theme/fonts";
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
+  const [fontsLoaded] = useFonts(fontsToLoad);
 
   // initialize database before any screen renders
   useEffect(() => {
-    const init = () => {
-      initDb();
-      setReady(true);
-    };
-
-    init();
+  initDb();
+    useGamificationStore.getState().init();
+    setReady(true);
   }, []);
 
   const AppTheme = {
@@ -29,7 +31,8 @@ export default function RootLayout() {
   };
 
   // block rendering until DB is ready
-  if (!ready) {
+
+  if (!ready || !fontsLoaded) {
     return (
       <View
         style={{

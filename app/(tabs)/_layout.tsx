@@ -17,8 +17,13 @@ const TAB_CONFIG: Record<
   index: { icon: "home", outline: "home-outline" },
   HabitScreen: { icon: "repeat", outline: "repeat-outline" },
   MoodScreen: { icon: "happy", outline: "happy-outline" },
-  GamificationScreen: { icon: "game-controller", outline: "game-controller-outline" },
   GoalScreen: { icon: "flag", outline: "flag-outline" },
+  GamificationScreen: { icon: "game-controller", outline: "game-controller-outline" },
+  TodosScreen: { icon: "checkbox", outline: "checkbox-outline" },
+  ChallengeScreen: {  icon: "flame", outline: "flame-outline" },
+  RandomScreen: {  icon: "shuffle", outline: "shuffle-outline" },
+  SobrietyScreen: {  icon: "link", outline: "link-outline" },
+  SettingsScreen: {  icon: "settings", outline: "settings-outline" },
 };
 
 export default function TabsLayout() {
@@ -61,7 +66,7 @@ export default function TabsLayout() {
                 <Ionicons
                   name={focused ? config.icon : config.outline}
                   size={20}
-                  color={focused ? colors.buttonActive : colors.muted}
+                  color={focused ? colors.accent : colors.muted}
                 />
               </View>
             );
@@ -71,8 +76,9 @@ export default function TabsLayout() {
     >
       <Tabs.Screen name="HabitScreen" />
       <Tabs.Screen name="MoodScreen" />
-      <Tabs.Screen name="GamificationScreen" />
       <Tabs.Screen name="GoalScreen" />
+      <Tabs.Screen name="ChallengeScreen" />
+      <Tabs.Screen name="GamificationScreen" />
     </Tabs>
     </SafeAreaView>
   );

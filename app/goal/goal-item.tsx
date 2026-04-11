@@ -1,9 +1,11 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import AppText from "../../ui/components/AppText";
-import { colors, radius, spacing } from "../../ui/theme";
+import { colors, fonts, radius, spacing } from "../../ui/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { Difficulty } from "../../features/gamification/difficulty";
+import DifficultyBadge from "../../ui/components/DifficultyBadge";
+import PriorityBadge from "../../ui/components/PriorityBadge";
 
 type GoalItemProps = {
   item: any;
@@ -48,25 +50,37 @@ export default function GoalItem({
         }}
       >
         <View style={{ flex: 1 }}>
-          {/* TITLE */}
-          <AppText
+          <View
             style={{
-              fontWeight: "bold",
-              textDecorationLine: isCompleted ? "line-through" : "none",
-              opacity: isCompleted || item.is_archived ? 0.5 : 1,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 6,
+              flexWrap: "wrap"
             }}
           >
-            {item.title}
-          </AppText>
+            <AppText
+              style={{
+                fontFamily: fonts.interBold,
+                textDecorationLine: isCompleted ? "line-through" : "none",
+                opacity: isCompleted || item.is_archived ? 0.5 : 1,
+                fontSize: 15,
+              }}
+            >
+              {item.title}
+            </AppText>
+
+            <DifficultyBadge difficulty={item.difficulty} />
+            <PriorityBadge priority={item.priority} />
+          </View>
 
           {item.motivation_reason && (
             <AppText
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 fontStyle: "italic",
                 color: colors.text,
                 opacity: 0.8,
-                marginTop: 2,
+                marginVertical: 4,
               }}
               numberOfLines={2}
             >
@@ -81,7 +95,7 @@ export default function GoalItem({
             <Ionicons
               name="checkmark-circle-outline"
               size={22}
-              color={colors.buttonActive}
+              color={"#9eaf9e"}
             />
           </TouchableOpacity>
         )}
@@ -99,7 +113,7 @@ export default function GoalItem({
                   : "archive-outline"
               }
               size={22}
-              color={colors.muted}
+              color={"#afaf9e"}
             />
           </TouchableOpacity>
         )}
@@ -108,24 +122,13 @@ export default function GoalItem({
       {isExpanded && (
         <>
 
-          {(item.difficulty || item.description) && (
+          {(item.description) && (
             <AppText
               style={{
                 fontSize: 13,
                 marginBottom: 6,
               }}
             >
-              {item.difficulty && (
-                <AppText
-                  style={{
-                    color: colors.difficulty[item.difficulty as Difficulty],
-                    fontWeight: "600",
-                  }}
-                >
-                  {item.difficulty}
-                </AppText>
-              )}
-
               {item.description ? ` ${item.description}` : ""}
             </AppText>
           )}
@@ -152,13 +155,17 @@ export default function GoalItem({
             </View>
           )}
 
-          {/* 🔹 STEPS */}
+          {/* STEPS */}
           {item.steps?.length > 0 && (
             <View style={{ marginTop: 6 }}>
               {item.steps.map((step: any) => (
                 <TouchableOpacity
                   key={step.id}
-                  onPress={() => toggleStep(item.id, step.id)}
+                  disabled={isCompleted}
+                  onPress={() => {
+                    if (isCompleted) return;
+                    toggleStep(item.id, step.id);
+                  }}
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
@@ -168,14 +175,14 @@ export default function GoalItem({
                   {/* checkbox */}
                   <View
                     style={{
-                      width: 18,
-                      height: 18,
+                      width: 14,
+                      height: 14,
                       marginRight: 8,
                       borderRadius: 4,
                       borderWidth: 1,
                       borderColor: colors.muted,
                       backgroundColor: step.is_completed
-                        ? colors.buttonActive
+                        ? colors.accent
                         : "transparent",
                     }}
                   />

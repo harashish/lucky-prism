@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { View, Pressable } from "react-native";
 import AppText from "../../ui/components/AppText";
-import { colors, radius, spacing } from "../../ui/theme";
+import { colors, fonts, radius, spacing } from "../../ui/theme";
 import { useRouter } from "expo-router";
 import { Habit } from "../../features/habit/habit.repo";
+import DifficultyBadge from "../../ui/components/DifficultyBadge";
+
 
 type HabitProps = {
   item: Habit & { days?: any[] };
@@ -42,11 +44,13 @@ export default function HabitItem({ item, onToggleToday, onToggleDay }: HabitPro
           alignItems: "center",
         }}
       >
-        <View style={{ flex: 1 }}>
-          <AppText style={{ fontWeight: "bold" }}>
-            {item.title}
-          </AppText>
-        </View>
+      <View style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 8 }}>
+        <AppText style={{ fontFamily: fonts.interBold, fontSize: 15 }}>
+          {item.title}
+        </AppText>
+
+        <DifficultyBadge difficulty={item.difficulty} />
+      </View>
 
         <Pressable
             onPress={() => onToggleToday(item.id!)}
@@ -69,32 +73,27 @@ export default function HabitItem({ item, onToggleToday, onToggleDay }: HabitPro
 
 {expanded && (
   <>
-    {(item.difficulty || item.description) && (
+    {(item.description) && (
       <AppText
         style={{
           fontSize: 13,
           marginBottom: 6,
+          fontFamily: fonts.nunitoRegular,
         }}
       >
-        <AppText
-          style={{
-            color: difficultyColor,
-            fontWeight: "600",
-          }}
-        >
-          {item.difficulty}
-        </AppText>
-
         {item.description ? ` ${item.description}` : ""}
       </AppText>
     )}
 
-    {/* MOTIVATION (bez labela) */}
+    {/* MOTIVATION  */}
     {item.motivation_reason ? (
       <AppText
         style={{
-          fontStyle: "italic",
+          //fontStyle: "italic",
+          fontFamily: fonts.nunitoBold,
+          fontSize: 13,
           marginBottom: 10,
+          color: "#8c87b9",
         }}
       >
         {item.motivation_reason}

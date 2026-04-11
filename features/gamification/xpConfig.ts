@@ -1,6 +1,7 @@
-import { Period } from "../../features/goal/goal.types";
+import { Period as GoalPeriod } from "../../features/goal/goal.types";
+import { Period as ChallengePeriod } from "../../features/challenge/challenge.types";
 
-// MULTIPLIERS
+// MODULE
 export const MODULE_MULTIPLIER = {
   habit: 1,
   mood: 0.5,
@@ -11,22 +12,16 @@ export const MODULE_MULTIPLIER = {
 export type Module = keyof typeof MODULE_MULTIPLIER;
 
 
-// GOAL - PERIOD MULTIPLIER
-export const GOAL_PERIOD_MULTIPLIER: Record<Period, number> = {
+// GOAL
+export const GOAL_PERIOD_MULTIPLIER: Record<GoalPeriod, number> = {
   weekly: 1,
   monthly: 3,
   yearly: 8,
 };
 
 
-/*
-// CHALLENGE - PERIOD MULTIPLIER (for future use if we want to add time-based challenges)
-export const CHALLENGE_PERIOD_MULTIPLIER = {
+// CHALLENGE
+export const CHALLENGE_PERIOD_MULTIPLIER: Record<ChallengePeriod, number> = {
   daily: 1,
-  weekly: 2,
-  monthly: 4,
-} as const;
-
-export type ChallengePeriod = keyof typeof CHALLENGE_PERIOD_MULTIPLIER;
-
-*/
+  weekly: 3,
+};

@@ -8,7 +8,7 @@ export default function AppText({ style, ...props }: TextProps) {
       style={[
         {
           color: colors.text,
-          fontFamily: fonts.poppinsRegular,
+          fontFamily: fonts.interRegular,
           lineHeight: 20,
         },
         style,

@@ -15,9 +15,9 @@ const CELL_MARGIN = 2;
 const DAY_LABEL_WIDTH = 28;
 
 const getStreakColor = (value: number) => {
-  if (value >= 30) return "#f1c40f";
-  if (value >= 8) return "#c47d27";
-  if (value >= 4) return "#2ecc71";
+  if (value >= 30) return colors.difficulty.hard;
+  if (value >= 8) return colors.difficulty.medium;
+  if (value >= 4) return colors.difficulty.easy;
   return colors.muted;
 };
 

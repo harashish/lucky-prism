@@ -32,6 +32,16 @@ export function awardXp(event: GamificationEvent) {
       });
       source = "goal";
       break;
+
+    case "CHALLENGE_COMPLETED":
+      xp = calculateXp({
+        module: "challenge",
+        difficulty: event.difficulty,
+        period: event.period,
+      });
+      source = "challenge";
+      break; 
+      
       }
 
   if (xp > 0) {

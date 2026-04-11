@@ -1,11 +1,11 @@
 import { DIFFICULTIES } from "./difficulty";
-import { GOAL_PERIOD_MULTIPLIER, MODULE_MULTIPLIER } from "./xpConfig";
+import { CHALLENGE_PERIOD_MULTIPLIER, GOAL_PERIOD_MULTIPLIER, MODULE_MULTIPLIER } from "./xpConfig";
 
 type Params = {
   module: "habit" | "mood" | "goal" | "challenge";
   difficulty: keyof typeof DIFFICULTIES;
   streak?: number;
-  period?: keyof typeof GOAL_PERIOD_MULTIPLIER;
+  period?: string;
 };
 
 export function calculateXp(params: Params): number {
@@ -44,8 +44,11 @@ export function calculateXp(params: Params): number {
   }
 
   if (module === "goal" && period) {
-    xp *= GOAL_PERIOD_MULTIPLIER[period];
+    xp *= GOAL_PERIOD_MULTIPLIER[period as keyof typeof GOAL_PERIOD_MULTIPLIER];
   }
 
+  if (module === "challenge" && period) {
+    xp *= CHALLENGE_PERIOD_MULTIPLIER[period as keyof typeof CHALLENGE_PERIOD_MULTIPLIER];
+  }
   return Math.round(xp);
 }

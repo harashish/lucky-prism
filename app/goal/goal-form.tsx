@@ -14,9 +14,18 @@ import FormToggleSection from "../../ui/components/FormToggleSelection";
 import { DIFFICULTIES, Difficulty } from "../../features/gamification/difficulty";
 import { PERIODS, Period } from "../../features/goal/goal.types";
 import { goalRepo } from "../../features/goal/goal.repo";
+import { PRIORITIES, Priority } from "../../features/gamification/priority";
 
 const difficulties = Object.keys(DIFFICULTIES) as Difficulty[];
-const periods = Object.keys(PERIODS) as Period[];
+const periods = PERIODS.map(p => ({
+  value: p,
+  label: p,
+}));
+
+const priorities = Object.keys(PRIORITIES).map(p => ({
+  value: p as Priority,
+  label: p,
+}));
 
 export default function GoalFormScreen() {
   const router = useRouter();
@@ -49,6 +58,7 @@ export default function GoalFormScreen() {
 
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
   const [period, setPeriod] = useState<Period>(initialPeriod);
+  const [priority, setPriority] = useState<Priority | undefined>();
 
   const [steps, setSteps] = useState<any[]>([]);
 
@@ -71,6 +81,7 @@ export default function GoalFormScreen() {
 
     setDifficulty(existing.difficulty);
     setPeriod(existing.period);
+    setPriority(existing.priority ?? undefined);
 
     setSteps(goalRepo.getSteps(existing.id!));
   }, [existing]);
@@ -107,6 +118,7 @@ export default function GoalFormScreen() {
       ceiling_goal: ceiling,
       difficulty,
       period,
+      priority,
       is_completed: existing?.is_completed ?? 0,
       is_archived: existing?.is_archived ?? 0,
       created_at: existing?.created_at ?? new Date().toISOString(),
@@ -200,7 +212,7 @@ export default function GoalFormScreen() {
               marginBottom: 6,
             }}
           >
-            <AppText style={{ fontSize: 12, color: "#777" }}>
+            <AppText style={{ fontSize: 12, color: colors.muted }}>
               Steps
             </AppText>
 
@@ -220,12 +232,12 @@ export default function GoalFormScreen() {
                 width: 28,
                 height: 28,
                 borderRadius: radius.sm,
-                backgroundColor: colors.buttonActive,
+                backgroundColor: colors.buttonConfirm,
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <AppText style={{ color: "#fff", fontSize: 16 }}>+</AppText>
+              <AppText style={{ color: colors.white, fontSize: 16 }}>+</AppText>
             </TouchableOpacity>
           </View>
 
@@ -265,7 +277,7 @@ export default function GoalFormScreen() {
                   width: 28,
                   height: 28,
                   borderRadius: radius.sm,
-                  backgroundColor: "#3a2f2d",
+                  backgroundColor: colors.buttonDelete,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
@@ -291,9 +303,21 @@ export default function GoalFormScreen() {
             {/* DIFFICULTY */}
             <FormSection title="Difficulty">
               <SelectChips
-                options={difficulties}
+                options={difficulties.map(d => ({
+                  value: d,
+                  label: d,
+                }))}
                 selected={difficulty}
                 onSelect={setDifficulty}
+              />
+            </FormSection>
+
+            {/* PRIORITY */}
+            <FormSection title="Priority (optional)">
+              <SelectChips
+                options={priorities}
+                selected={priority}
+                onSelect={setPriority}
               />
             </FormSection>
 

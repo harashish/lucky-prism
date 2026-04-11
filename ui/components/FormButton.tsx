@@ -20,7 +20,7 @@ export default function FormButton({
         backgroundColor:
           variant === "danger"
             ? colors.buttonDelete
-            : colors.buttonActive,
+            : colors.buttonConfirm,
         padding: spacing.m,
         borderRadius: radius.md,
         alignItems: "center",

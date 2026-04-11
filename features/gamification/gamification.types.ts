@@ -5,5 +5,6 @@ export type GamificationEvent =
   | { type: "MOOD_LOGGED"; difficulty: Difficulty; streak?: number }
   | { type: "HABIT_COMPLETED"; difficulty: Difficulty; streak?: number }
   | { type: "GOAL_COMPLETED"; difficulty: Difficulty; period: Period }
+  | { type: "CHALLENGE_COMPLETED"; difficulty: Difficulty; period: "daily" | "weekly" }
 
   

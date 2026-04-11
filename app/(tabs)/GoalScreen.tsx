@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { View, TouchableOpacity, FlatList, Alert } from "react-native";
 import AppText from "../../ui/components/AppText";
-import { colors, radius } from "../../ui/theme";
+import { colors, fonts, radius, spacing } from "../../ui/theme";
 import { useGoalStore } from "../../features/goal/goal.store";
 import { useFocusEffect, useRouter } from "expo-router";
 import dayjs from "dayjs";
@@ -112,8 +112,9 @@ export default function GoalsScreen() {
           >
             <AppText
               style={{
-                fontWeight: "bold",
+                fontFamily: fonts.poppinsSemiBold,
                 textTransform: "capitalize",
+                fontSize: 13
               }}
             >
               {p}
@@ -128,12 +129,14 @@ export default function GoalsScreen() {
           style={{
             backgroundColor: colors.card,
             borderRadius: 12,
-            padding: 10,
+            paddingHorizontal: spacing.m,
+            paddingTop: 10,
+            paddingBottom: 12,
             marginBottom: 12,
           }}
         >
-          <AppText style={{ fontSize: 12 }}>
-            Goals progress: {Math.round(progress * 100)}%
+          <AppText style={{ fontSize: 12, marginBottom: 3 }}>
+            progress: {Math.round(progress * 100)}%
           </AppText>
 
           <View
@@ -148,14 +151,14 @@ export default function GoalsScreen() {
               style={{
                 height: 6,
                 width: `${progress * 100}%`,
-                backgroundColor: colors.buttonActive,
+                backgroundColor: colors.accent,
                 borderRadius: radius.xs,
               }}
             />
           </View>
 
-          <AppText style={{ fontSize: 12 }}>
-            Time ({selectedPeriod}):{" "}
+          <AppText style={{ fontSize: 12, marginBottom: 3 }}>
+            time:{" "}
             {Math.round(timeProgress * 100)}%
           </AppText>
 
@@ -170,7 +173,7 @@ export default function GoalsScreen() {
               style={{
                 height: 6,
                 width: `${timeProgress * 100}%`,
-                backgroundColor: colors.buttonActive,
+                backgroundColor: colors.accent,
                 borderRadius: radius.xs,
               }}
             />

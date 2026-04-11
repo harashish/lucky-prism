@@ -49,7 +49,7 @@ export default function GamificationScreen() {
             style={{
               width: `${progress * 100}%`,
               height: "100%",
-              backgroundColor: colors.buttonActive,
+              backgroundColor: colors.accent,
             }}
           />
         </View>
@@ -102,7 +102,7 @@ export default function GamificationScreen() {
 
       {/* LOGS */}
       {logs.length === 0 ? (
-        <AppText style={{ color: colors.muted }}>
+        <AppText style={{ color: colors.muted, textAlign: "center" }}>
           No activity yet
         </AppText>
       ) : (

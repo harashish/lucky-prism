@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   card: {
-    backgroundColor: colors.buttonActive, // albo colors.special jak dodasz
+    backgroundColor: colors.accent,
     paddingVertical: 10,
     paddingHorizontal: 18,
     borderRadius: 14,

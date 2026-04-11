@@ -3,7 +3,6 @@
     "name": "lucky prism",
     "slug": "lucky-prisme",
     "scheme": "luckyprism",
-
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/lucky-prism-icon.png",
@@ -29,7 +28,8 @@
     },
     "plugins": [
       "expo-sqlite",
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ]
   }
 }

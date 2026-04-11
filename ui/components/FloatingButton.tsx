@@ -5,7 +5,7 @@ import { colors } from "../theme";
 export default function FloatingButton({ onPress, style, children }: any) {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
-      {children ?? <AppText style={{ fontSize: 32 }}>+</AppText>}
+      {children ?? <AppText style={{ fontSize: 32, marginTop: -5 }}>+</AppText>}
     </TouchableOpacity>
   );
 }
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: colors.buttonActive,
+    backgroundColor: colors.accent,
     justifyContent: "center",
     alignItems: "center",
   },
