@@ -152,42 +152,37 @@ run(`
 
   // goals
 
-  run(`
-    CREATE TABLE IF NOT EXISTS goals (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-      title TEXT NOT NULL,
-      description TEXT,
-      motivation_reason TEXT NOT NULL,
+run(`
+  CREATE TABLE IF NOT EXISTS goals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-      floor_goal TEXT,
-      target_goal TEXT,
-      ceiling_goal TEXT,
+    title TEXT NOT NULL,
+    description TEXT,
+    motivation_reason TEXT NOT NULL,
 
-      period TEXT NOT NULL,
-      difficulty TEXT NOT NULL,
-      priority TEXT,
+    floor_goal TEXT,
+    target_goal TEXT,
+    ceiling_goal TEXT,
 
-      is_completed INTEGER DEFAULT 0,
-      completed_at TEXT,
+    period TEXT NOT NULL,
+    difficulty TEXT NOT NULL,
+    priority TEXT,
 
-      is_archived INTEGER DEFAULT 0,
-      archived_at TEXT,
+    is_completed INTEGER DEFAULT 0,
+    completed_at TEXT,
 
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-    );
-  `);
+    is_archived INTEGER DEFAULT 0,
+    archived_at TEXT,
 
-  try {
-    run(`ALTER TABLE goals ADD COLUMN period_start TEXT`);
-  } catch (e) {
-    // column already exists → ignore
-  }
+    period_start TEXT,
+    was_carried_over INTEGER DEFAULT 0,
 
-  try {
-  run(`ALTER TABLE goals ADD COLUMN was_carried_over INTEGER DEFAULT 0`);
-} catch (e) {}
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+`);
+
 
   run(`
     CREATE TABLE IF NOT EXISTS goal_steps (
@@ -244,6 +239,41 @@ run(`
     INSERT OR IGNORE INTO todo_categories (id, name, difficulty, color, is_default)
     VALUES (1, 'general', 'easy', '#888', 1);
   `);
+
+
+  // =========================
+// SOBRIETY
+// =========================
+
+run(`
+  CREATE TABLE IF NOT EXISTS sobriety (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    name TEXT NOT NULL,
+    description TEXT,
+    motivation_reason TEXT NOT NULL,
+
+    started_at TEXT NOT NULL,
+    ended_at TEXT,
+
+    is_active INTEGER DEFAULT 1,
+
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+`);
+
+run(`
+  CREATE TABLE IF NOT EXISTS sobriety_relapse (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    sobriety INTEGER NOT NULL,
+    occurred_at TEXT NOT NULL,
+    note TEXT,
+
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+`);
 
   console.log("DB INIT OK");
   } catch (e) {

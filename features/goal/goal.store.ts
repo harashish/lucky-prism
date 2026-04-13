@@ -8,7 +8,7 @@ type GoalState = {
 
   loadGoals: (period?: string, archived?: boolean) => void;
 
-  upsertGoal: (data: Goal) => void;
+  upsertGoal: (data: Partial<Goal>) => number;
   deleteGoal: (id: number) => void;
 
   completeGoal: (goalId: number) => void;
@@ -72,25 +72,26 @@ export const useGoalStore = create<GoalState>((set, get) => ({
 
   // ===== UPSERT =====
 
-    upsertGoal: (data) => {
-      let id = data.id;
+  upsertGoal: (data) => {
+    let id = data.id;
 
-      if (id) {
-        goalRepo.update(id, data);
-      } else {
-        id = goalRepo.insert(data);
-      }
+    if (id) {
+      goalRepo.update(id, data);
+    } else {
+      id = goalRepo.insert(data as Goal);
+    }
 
-      const { currentPeriod, showArchived } = get();
-      get().loadGoals(currentPeriod, showArchived);
-
-      return id;
-    },
-  deleteGoal: (id) => {
-    goalRepo.delete(id);
     const { currentPeriod, showArchived } = get();
     get().loadGoals(currentPeriod, showArchived);
+
+    return id!;
   },
+  
+    deleteGoal: (id) => {
+      goalRepo.delete(id);
+      const { currentPeriod, showArchived } = get();
+      get().loadGoals(currentPeriod, showArchived);
+    },
 
   // ===== COMPLETE =====
 

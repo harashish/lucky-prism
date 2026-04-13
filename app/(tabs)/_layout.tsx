@@ -79,6 +79,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="GoalScreen" />
       <Tabs.Screen name="ChallengeScreen" />
       <Tabs.Screen name="TodoScreen" />
+      <Tabs.Screen name="SobrietyScreen" />
       <Tabs.Screen name="GamificationScreen" />
     </Tabs>
     </SafeAreaView>

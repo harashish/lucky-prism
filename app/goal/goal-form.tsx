@@ -119,6 +119,7 @@ export default function GoalFormScreen() {
       difficulty,
       period,
       priority,
+      
       is_completed: existing?.is_completed ?? 0,
       is_archived: existing?.is_archived ?? 0,
       created_at: existing?.created_at ?? new Date().toISOString(),
