@@ -76,9 +76,9 @@ export default function HabitItem({ item, onToggleToday, onToggleDay }: HabitPro
     {(item.description) && (
       <AppText
         style={{
-          fontSize: 13,
-          marginBottom: 6,
-          fontFamily: fonts.nunitoRegular,
+          fontSize: 12,
+          marginBottom: 6
+          , fontFamily: fonts.interMedium
         }}
       >
         {item.description}
@@ -90,8 +90,8 @@ export default function HabitItem({ item, onToggleToday, onToggleDay }: HabitPro
       <AppText
         style={{
           //fontStyle: "italic",
-          fontFamily: fonts.nunitoBold,
-          fontSize: 13,
+          fontFamily: fonts.interBold,
+          fontSize: 12,
           marginBottom: 10,
           color: colors.accent,
         }}

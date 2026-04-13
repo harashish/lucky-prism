@@ -275,6 +275,21 @@ run(`
   );
 `);
 
+// =========================
+// NOTES
+// =========================
+
+run(`
+  CREATE TABLE IF NOT EXISTS notes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    content TEXT NOT NULL,
+
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+`);
+
   console.log("DB INIT OK");
   } catch (e) {
     console.error("DB INIT ERROR", e);

@@ -87,12 +87,12 @@ export default function GoalItem({
           )}
           </View>
 
-                   {(item.description) && (
+          {(item.description) && (
             <AppText
               style={{
-                fontSize: 13,
+                fontSize: 12,
                 marginBottom: 6,
-                marginVertical: 4,
+                fontFamily: fonts.interRegular,
               }}
             >
               {item.description}
@@ -131,15 +131,15 @@ export default function GoalItem({
         )}
       </View>
 
+
       {isExpanded && (
         <>
           <AppText
               style={{
-                fontSize: 13,
-                fontStyle: "italic",
-                color: colors.text,
-                opacity: 0.8,
-                marginVertical: 4,
+                fontSize: 12,
+                color: colors.accent,
+                marginBottom: 10,
+                fontFamily: fonts.interBold,
               }}
               numberOfLines={2}
             >

@@ -165,12 +165,12 @@ export default function SobrietyItem({
         {isExpanded && (
           <View style={{ marginTop: 12 }}>
             {item.description ? (
-              <AppText style={{ fontSize: 12, color: colors.muted }}>
+              <AppText style={{ fontSize: 12 , fontFamily: fonts.interMedium}}>
                 {item.description}
               </AppText>
             ) : null}
 
-            <AppText style={{ fontSize: 12, marginTop: 6 }}>
+            <AppText style={{ fontSize: 12, marginTop: 6 , color: colors.accent, fontFamily: fonts.interMedium}}>
               {item.motivation_reason}
             </AppText>
 

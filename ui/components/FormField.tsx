@@ -1,6 +1,7 @@
-import { View, TextInput } from "react-native";
+import { View, TextInput, TextStyle } from "react-native";
 import AppText from "./AppText";
 import { colors, spacing, radius } from "../theme";
+
 
 type Props = {
   label?: string;
@@ -8,7 +9,11 @@ type Props = {
   onChange: (v: string) => void;
   multiline?: boolean;
   placeholder?: string;
+  placeholderTextColor?: string;
+  inputStyle?: TextStyle;
 };
+
+
 
 export default function FormField({
   label,
@@ -16,6 +21,8 @@ export default function FormField({
   onChange,
   multiline,
   placeholder,
+  placeholderTextColor ,
+  inputStyle,
 }: Props) {
   return (
     <View style={{ marginBottom: spacing.m }}>
@@ -31,21 +38,26 @@ export default function FormField({
         </AppText>
       )}
 
-      <TextInput
-        value={value}
-        onChangeText={onChange}
-        multiline={multiline}
-        cursorColor={colors.accent}
-        selectionColor={colors.accent}
-        style={{
+    <TextInput
+      value={value}
+      onChangeText={onChange}
+      multiline={multiline}
+      placeholder={placeholder}
+      placeholderTextColor={placeholderTextColor ?? colors.muted}
+      cursorColor={colors.accent}
+      selectionColor={colors.accent}
+      style={[
+        {
           backgroundColor: colors.card,
           padding: 12,
           borderRadius: radius.md,
           color: colors.text,
           minHeight: multiline ? 100 : undefined,
           textAlignVertical: multiline ? "top" : "center",
-        }}
-      />
+        },
+        inputStyle,
+      ]}
+    />
     </View>
   );
 }

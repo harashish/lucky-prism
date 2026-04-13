@@ -24,6 +24,7 @@ const TAB_CONFIG: Record<
   RandomScreen: {  icon: "shuffle", outline: "shuffle-outline" },
   SobrietyScreen: {  icon: "link", outline: "link-outline" },
   SettingsScreen: {  icon: "settings", outline: "settings-outline" },
+  NoteScreen: { icon: "document-text", outline: "document-text-outline" },
 };
 
 export default function TabsLayout() {
@@ -80,6 +81,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="ChallengeScreen" />
       <Tabs.Screen name="TodoScreen" />
       <Tabs.Screen name="SobrietyScreen" />
+      <Tabs.Screen name="NoteScreen" />
       <Tabs.Screen name="GamificationScreen" />
     </Tabs>
     </SafeAreaView>
