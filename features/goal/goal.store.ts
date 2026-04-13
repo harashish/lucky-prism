@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { goalRepo, Goal } from "./goal.repo";
 import { awardXp } from "../gamification/gamification.service";
+import { isExpired, getPeriodStart } from "./goal.service";
 
 type GoalState = {
   goals: (Goal & { steps?: any[] })[];
@@ -32,6 +33,27 @@ export const useGoalStore = create<GoalState>((set, get) => ({
   // ===== LOAD =====
 
   loadGoals: (period, archived) => {
+    const raw = goalRepo.getAll(
+      period as any,
+      archived ?? get().showArchived
+    );
+
+    // 🔥 AUTO LOGIC
+    raw.forEach((g) => {
+      if (!g.is_archived && isExpired(g)) {
+        if (g.is_completed) {
+          goalRepo.toggleArchive(g.id!, 1);
+        } else {
+          goalRepo.update(g.id!, {
+            period_start: getPeriodStart(g.period),
+            is_completed: 0,
+            completed_at: null,
+            was_carried_over: g.was_carried_over ? g.was_carried_over : 1,
+          });
+        }
+      }
+    });
+
     const goals = goalRepo.getAll(
       period as any,
       archived ?? get().showArchived
@@ -42,7 +64,7 @@ export const useGoalStore = create<GoalState>((set, get) => ({
       steps: goalRepo.getSteps(g.id!),
     }));
 
-    set({ 
+    set({
       goals: enriched,
       currentPeriod: period,
     });

@@ -71,22 +71,34 @@ export default function GoalItem({
 
             <DifficultyBadge difficulty={item.difficulty} />
             <PriorityBadge priority={item.priority} />
+            {item.was_carried_over === 1 && !item.is_completed && !item.is_archived && (
+            <View
+              style={{
+                paddingHorizontal: 6,
+                paddingVertical: 2,
+                borderRadius: 6,
+                backgroundColor: "#f5c54233",
+              }}
+            >
+              <AppText style={{ fontSize: 10, color: "#f5c542" }}>
+                expired
+              </AppText>
+            </View>
+          )}
           </View>
 
-          {item.motivation_reason && (
+                   {(item.description) && (
             <AppText
               style={{
-                fontSize: 14,
-                fontStyle: "italic",
-                color: colors.text,
-                opacity: 0.8,
+                fontSize: 13,
+                marginBottom: 6,
                 marginVertical: 4,
               }}
-              numberOfLines={2}
             >
-              {item.motivation_reason}
+              {item.description}
             </AppText>
           )}
+          
         </View>
 
         {/* COMPLETE */}
@@ -121,17 +133,18 @@ export default function GoalItem({
 
       {isExpanded && (
         <>
-
-          {(item.description) && (
-            <AppText
+          <AppText
               style={{
                 fontSize: 13,
-                marginBottom: 6,
+                fontStyle: "italic",
+                color: colors.text,
+                opacity: 0.8,
+                marginVertical: 4,
               }}
+              numberOfLines={2}
             >
-              {item.description ? ` ${item.description}` : ""}
+              {item.motivation_reason}
             </AppText>
-          )}
 
           {(item.floor_goal || item.target_goal || item.ceiling_goal) && (
             <View style={{ gap: 4, marginBottom: 10 }}>

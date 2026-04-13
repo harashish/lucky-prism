@@ -41,6 +41,14 @@ export function awardXp(event: GamificationEvent) {
       });
       source = "challenge";
       break; 
+
+    case "TODO_COMPLETED":
+      xp = calculateXp({
+        module: "todo",
+        difficulty: event.difficulty,
+      });
+      source = "todo";
+      break;  
       
       }
 

@@ -17,6 +17,7 @@ export default function SectionLabel({ children, centered = true }: Props) {
     >
       <AppText
         style={{
+          
           fontSize: 11,
           letterSpacing: 1,
           color: colors.muted,

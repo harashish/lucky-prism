@@ -83,10 +83,10 @@ export default function GoalsScreen() {
       }}
     >
       {/* ARCHIVED TOGGLE */}
-      <View style={{ alignItems: "center", marginBottom: 8 }}>
+      <View style={{ width: "100%" }}>
         <TouchableOpacity
           onPress={() => setShowArchived(!showArchived)}
-          style={{ paddingVertical: 2, paddingHorizontal: 10 }}
+          style={{  }}
         >
           <SectionLabel>{showArchived ? "archived" : "active"}</SectionLabel>
         </TouchableOpacity>

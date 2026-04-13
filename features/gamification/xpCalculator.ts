@@ -2,7 +2,7 @@ import { DIFFICULTIES } from "./difficulty";
 import { CHALLENGE_PERIOD_MULTIPLIER, GOAL_PERIOD_MULTIPLIER, MODULE_MULTIPLIER } from "./xpConfig";
 
 type Params = {
-  module: "habit" | "mood" | "goal" | "challenge";
+  module: "habit" | "mood" | "goal" | "challenge" | "todo";
   difficulty: keyof typeof DIFFICULTIES;
   streak?: number;
   period?: string;

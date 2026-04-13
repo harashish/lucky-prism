@@ -2,7 +2,7 @@
 
 import * as SQLite from "expo-sqlite";
 
-export const db = SQLite.openDatabaseSync("app_v4.db");
+export const db = SQLite.openDatabaseSync("app_v9.db");
 
 /*
 ========================

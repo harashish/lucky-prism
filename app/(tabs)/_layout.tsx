@@ -19,7 +19,7 @@ const TAB_CONFIG: Record<
   MoodScreen: { icon: "happy", outline: "happy-outline" },
   GoalScreen: { icon: "flag", outline: "flag-outline" },
   GamificationScreen: { icon: "game-controller", outline: "game-controller-outline" },
-  TodosScreen: { icon: "checkbox", outline: "checkbox-outline" },
+  TodoScreen: { icon: "checkbox", outline: "checkbox-outline" },
   ChallengeScreen: {  icon: "flame", outline: "flame-outline" },
   RandomScreen: {  icon: "shuffle", outline: "shuffle-outline" },
   SobrietyScreen: {  icon: "link", outline: "link-outline" },
@@ -78,6 +78,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="MoodScreen" />
       <Tabs.Screen name="GoalScreen" />
       <Tabs.Screen name="ChallengeScreen" />
+      <Tabs.Screen name="TodoScreen" />
       <Tabs.Screen name="GamificationScreen" />
     </Tabs>
     </SafeAreaView>

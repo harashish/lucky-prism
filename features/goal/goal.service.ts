@@ -1,11 +1,26 @@
+import { Goal } from "./goal.repo";
+import { Period } from "./goal.types";
+import dayjs from "dayjs";
+
+export const getPeriodStart = (period: Period) => {
+  const now = dayjs();
+
+  if (period === "weekly") return now.startOf("isoWeek").toISOString();
+  if (period === "monthly") return now.startOf("month").toISOString();
+  return now.startOf("year").toISOString();
+};
+
+export const isExpired = (goal: Goal) => {
+  const currentStart = getPeriodStart(goal.period);
+  return dayjs(goal.period_start).isBefore(currentStart);
+};
+
 export const calculateGoalProgress = (goals: any[]) => {
   if (!goals.length) return 0;
 
   const completed = goals.filter(g => g.is_completed).length;
   return completed / goals.length;
 };
-
-import dayjs from "dayjs";
 
 export const calculateTimeProgress = (period: string) => {
   const now = dayjs();
@@ -36,7 +51,7 @@ export const groupGoalsByPeriod = (goals: any[], period: string) => {
   const groups: Record<string, any[]> = {};
 
   goals.forEach((goal) => {
-    const date = dayjs(goal.created_at);
+    const date = dayjs(goal.period_start);
 
     let label = "";
 

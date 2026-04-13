@@ -81,7 +81,7 @@ export default function HabitItem({ item, onToggleToday, onToggleDay }: HabitPro
           fontFamily: fonts.nunitoRegular,
         }}
       >
-        {item.description ? ` ${item.description}` : ""}
+        {item.description}
       </AppText>
     )}
 
@@ -93,7 +93,7 @@ export default function HabitItem({ item, onToggleToday, onToggleDay }: HabitPro
           fontFamily: fonts.nunitoBold,
           fontSize: 13,
           marginBottom: 10,
-          color: "#8c87b9",
+          color: colors.accent,
         }}
       >
         {item.motivation_reason}
@@ -146,11 +146,10 @@ export default function HabitItem({ item, onToggleToday, onToggleDay }: HabitPro
         } else if (status === 2) {
           squareStyle.backgroundColor = item.color || colors.buttonActive;
         } else if (status === 1) {
-          squareStyle.backgroundColor = colors.habit.skipped;
+          squareStyle.backgroundColor = colors.habit.empty;
         } else {
           squareStyle.backgroundColor = colors.habit.empty;
-          squareStyle.borderWidth = 1;
-          squareStyle.borderColor = item.color || colors.inputBorder;
+
         }
 
           return (

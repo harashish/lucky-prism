@@ -7,6 +7,7 @@ export const MODULE_MULTIPLIER = {
   mood: 0.5,
   goal: 1.5,
   challenge: 2,
+  todo: 1,
 } as const;
 
 export type Module = keyof typeof MODULE_MULTIPLIER;

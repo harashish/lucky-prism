@@ -20,11 +20,11 @@ export default function FormButton({
         backgroundColor:
           variant === "danger"
             ? colors.buttonDelete
-            : colors.buttonConfirm,
+            : colors.accent,
         padding: spacing.m,
         borderRadius: radius.md,
         alignItems: "center",
-        marginTop: spacing.m,
+        marginTop: 10,
       }}
     >
       <AppText>{label}</AppText>

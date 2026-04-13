@@ -35,8 +35,8 @@ export default function FormField({
         value={value}
         onChangeText={onChange}
         multiline={multiline}
-        cursorColor={colors.buttonActive}
-        selectionColor={colors.buttonActive}
+        cursorColor={colors.accent}
+        selectionColor={colors.accent}
         style={{
           backgroundColor: colors.card,
           padding: 12,

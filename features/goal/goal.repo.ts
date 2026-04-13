@@ -2,6 +2,7 @@ import { getAll, getOne, run } from "../../core/db/db";
 import { Difficulty } from "../gamification/difficulty";
 import { Priority } from "../gamification/priority";
 import { Period } from "./goal.types";
+import { getPeriodStart } from "./goal.service";
 
 export interface GoalStep {
   id?: number;
@@ -32,6 +33,9 @@ export interface Goal {
 
   is_archived: number;
   archived_at?: string | null;
+
+  period_start: string;
+  was_carried_over: number;
 
   created_at: string;
   updated_at: string;
@@ -74,6 +78,7 @@ export const goalRepo = {
 
   insert(goal: Goal): number {
     const now = new Date().toISOString();
+    const periodStart = getPeriodStart(goal.period);
 
     const result = run(
       `
@@ -82,9 +87,11 @@ export const goalRepo = {
         floor_goal, target_goal, ceiling_goal,
         period, difficulty, priority,
         is_completed, is_archived,
+        period_start,
+        was_carried_over,
         created_at, updated_at
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?, ?, ?)
       `,
       [
         goal.title,
@@ -96,6 +103,8 @@ export const goalRepo = {
         goal.period,
         goal.difficulty,
         goal.priority ?? null,
+        periodStart,
+        0,
         now,
         now,
       ]
@@ -110,7 +119,7 @@ export const goalRepo = {
       .join(", ");
 
     run(
-      `UPDATE goals SET ${fields}, updated_at = ? WHERE id = ?`,
+      `UPDATE goals SET ${fields}, updated_at = ?, was_carried_over = 0 WHERE id = ?`,
       [...Object.values(data), new Date().toISOString(), id]
     );
   },
@@ -122,25 +131,34 @@ export const goalRepo = {
 
   complete(id: number) {
     run(
-      `UPDATE goals SET is_completed = 1, completed_at = ? WHERE id = ?`,
+      `UPDATE goals SET is_completed = 1, completed_at = ?, was_carried_over = 0 WHERE id = ?`,
       [new Date().toISOString(), id]
     );
   },
 
   toggleArchive(id: number, isArchived: number) {
+    const now = new Date().toISOString();
+
+    const goal = getOne(`SELECT * FROM goals WHERE id = ?`, [id]);
+
+    let newPeriodStart = goal.period_start;
+
+    if (isArchived === 0 && goal) {
+      newPeriodStart = getPeriodStart(goal.period);
+    }
+
     run(
       `
       UPDATE goals
       SET is_archived = ?, 
           archived_at = ?, 
-          created_at = CASE WHEN ? = 0 THEN ? ELSE created_at END
+          period_start = ?
       WHERE id = ?
       `,
       [
         isArchived,
-        isArchived ? new Date().toISOString() : null,
-        isArchived,
-        new Date().toISOString(),
+        isArchived ? now : null,
+        newPeriodStart,
         id,
       ]
     );

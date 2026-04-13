@@ -48,25 +48,15 @@ run(`
   CREATE TABLE IF NOT EXISTS challenge_tags (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
+    color TEXT,
     is_default INTEGER DEFAULT 0
   );
 `);
 
-try {
-  run(`ALTER TABLE challenge_tags ADD COLUMN color TEXT`);
-} catch (e) {}
-
 // default tag
 run(`
-  INSERT OR IGNORE INTO challenge_tags (id, name, is_default)
-  VALUES (1, 'general', 1);
-`);
-
-// 🔥 ensure color exists
-run(`
-  UPDATE challenge_tags
-  SET color = '#888'
-  WHERE id = 1 AND color IS NULL
+  INSERT OR IGNORE INTO challenge_tags (id, name, color, is_default)
+  VALUES (1, 'general', '#888', 1);
 `);
 
   // MANY TO MANY
@@ -160,6 +150,8 @@ run(`
     );
   `);
 
+  // goals
+
   run(`
     CREATE TABLE IF NOT EXISTS goals (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -174,6 +166,7 @@ run(`
 
       period TEXT NOT NULL,
       difficulty TEXT NOT NULL,
+      priority TEXT,
 
       is_completed INTEGER DEFAULT 0,
       completed_at TEXT,
@@ -186,6 +179,16 @@ run(`
     );
   `);
 
+  try {
+    run(`ALTER TABLE goals ADD COLUMN period_start TEXT`);
+  } catch (e) {
+    // column already exists → ignore
+  }
+
+  try {
+  run(`ALTER TABLE goals ADD COLUMN was_carried_over INTEGER DEFAULT 0`);
+} catch (e) {}
+
   run(`
     CREATE TABLE IF NOT EXISTS goal_steps (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -197,6 +200,49 @@ run(`
 
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
+  `);
+
+
+  // =========================
+  // TODOS
+  // =========================
+
+  // categories
+  run(`
+    CREATE TABLE IF NOT EXISTS todo_categories (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      difficulty TEXT NOT NULL,
+      color TEXT,
+      is_default INTEGER DEFAULT 0
+    );
+  `);
+
+
+  // tasks
+  run(`
+    CREATE TABLE IF NOT EXISTS todo_tasks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+      content TEXT NOT NULL,
+
+      custom_difficulty TEXT,
+
+      category_id INTEGER NOT NULL,
+
+      is_completed INTEGER DEFAULT 0,
+      completed_at TEXT,
+
+      "order" INTEGER DEFAULT 0,
+
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  run(`
+    INSERT OR IGNORE INTO todo_categories (id, name, difficulty, color, is_default)
+    VALUES (1, 'general', 'easy', '#888', 1);
   `);
 
   console.log("DB INIT OK");

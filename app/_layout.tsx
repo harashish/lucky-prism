@@ -6,6 +6,7 @@ import { initDb } from "../core/db/init";
 import { View, ActivityIndicator } from "react-native";
 import XPPopup from "../ui/components/XPPopup";
 import { useGamificationStore } from "../features/gamification/gamification.store";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useFonts } from "expo-font";
 import { fontsToLoad } from "../ui/theme/fonts";
@@ -48,6 +49,7 @@ export default function RootLayout() {
   }
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <ThemeProvider value={AppTheme}>
       <Stack
         screenOptions={{
@@ -58,5 +60,6 @@ export default function RootLayout() {
 
       <XPPopup />
     </ThemeProvider>
+   </GestureHandlerRootView> 
   );
 }
