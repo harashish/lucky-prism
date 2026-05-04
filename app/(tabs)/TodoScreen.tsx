@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   View,
   TouchableOpacity,
@@ -33,7 +33,6 @@ export default function TodoScreen() {
     uncompleteTask,
     updateTask,
     deleteTask,
-    randomTask,
   } = useTodoStore();
 
   const [quickText, setQuickText] = useState("");
@@ -72,8 +71,23 @@ export default function TodoScreen() {
   };
 
   // ===== RANDOM =====
+
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const clearAllTimeouts = () => {
+    timeoutsRef.current.forEach(clearTimeout);
+    timeoutsRef.current = [];
+  };
+
+  useEffect(() => {
+    return () => clearAllTimeouts();
+  }, []);
+
+
   const handleRandom = () => {
     if (filteredTasks.length === 0) return;
+
+    clearAllTimeouts();
 
     setIsRolling(true);
 
@@ -92,7 +106,8 @@ export default function TodoScreen() {
       speed *= 1.15;
 
       if (totalTime < maxTime) {
-        setTimeout(roll, speed);
+        const t = setTimeout(roll, speed);
+        timeoutsRef.current.push(t);
       } else {
         const random =
           items[Math.floor(Math.random() * items.length)];
@@ -262,67 +277,76 @@ return (
       </SectionLabel>
     </TouchableOpacity>
 
-    <TouchableOpacity
-  onPress={handleRandom}
-  style={{
-    position: "absolute",
-    right: 0,
-    top: -4,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: radius.sm,
-  }}
->
-  <Ionicons name="dice-outline" size={16} color={colors.muted} />
-</TouchableOpacity>
+
   </View>
 
 
     {/* ===== CATEGORIES ===== */}
-    <View
-      style={{
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 8,
-        marginBottom: 12,
-        alignItems: "center",
-      }}
-    >
-      {categories.map((cat) => {
-        const isActive = selectedCategoryId === cat.id;
+<View
+  style={{
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 12,
+    alignItems: "center",
+  }}
+>
 
-        return (
-          <TouchableOpacity
-            key={cat.id}
-            onPress={() => setCategory(cat.id)}
-            style={{
-              paddingHorizontal: 12,
-              paddingVertical: 8,
-              borderRadius: radius.sm,
-              backgroundColor: isActive
-                ? colors.buttonActive
-                : colors.card,
-            }}
-          >
-            <AppText style={{ fontSize: 12 }}>
-              {cat.name}
-            </AppText>
-          </TouchableOpacity>
-        );
-      })}
+  {/* 🎲 RANDOM TILE (PIERWSZY) */}
+  <TouchableOpacity
+    onPress={handleRandom}
+    style={{
+      paddingHorizontal: 12,
+      paddingVertical: 12,
+      borderRadius: radius.sm,
+      backgroundColor: colors.card,
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <Ionicons name="dice-outline" size={14} color={colors.text} />
+  </TouchableOpacity>
 
+  {/* 📂 KATEGORIE */}
+  {categories.map((cat) => {
+    const isActive = selectedCategoryId === cat.id;
+
+    return (
       <TouchableOpacity
-        onPress={() => router.push("/todo/category-form")}
+        key={cat.id}
+        onPress={() => setCategory(cat.id)}
+        onLongPress={() =>
+          router.push(`/todo/category-form?id=${cat.id}`)
+        }
         style={{
           paddingHorizontal: 12,
           paddingVertical: 8,
           borderRadius: radius.sm,
-          backgroundColor: colors.buttonActive,
+          backgroundColor: isActive
+            ? colors.buttonActive
+            : colors.card,
         }}
       >
-        <AppText>+</AppText>
+        <AppText style={{ fontSize: 12 }}>
+          {cat.name}
+        </AppText>
       </TouchableOpacity>
-    </View>
+    );
+  })}
+
+  {/* ➕ ADD CATEGORY */}
+  <TouchableOpacity
+    onPress={() => router.push("/todo/category-form")}
+    style={{
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: radius.sm,
+      backgroundColor: colors.buttonActive,
+    }}
+  >
+    <AppText>+</AppText>
+  </TouchableOpacity>
+</View>
 
           <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -401,54 +425,62 @@ return (
       top: 0, left: 0, right: 0, bottom: 0,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "rgba(0,0,0,0.6)", // Trochę ciemniej, żeby tekst był czytelny
+      backgroundColor: "rgba(0,0,0,0.6)",
       zIndex: 999,
     }}
   >
     <View
       style={{
-        width: "80%",
+        width: "85%",
+        maxWidth: 500,
+        height: 260, // 🔥 KLUCZ
         backgroundColor: colors.card,
-        paddingVertical: 40,
-        paddingHorizontal: 24,
         borderRadius: radius.lg,
-        alignItems: "center",
-        // Dodaj lekkie uniesienie (shadow), żeby modal się odcinał
-        elevation: 5,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+        padding: 20,
       }}
     >
-      <AppText
-        style={{
-          fontSize: 20,
-          fontWeight: "600",
-          textAlign: "center",
-          marginBottom: isFinishedRolling ? 24 : 0, // Margines tylko gdy pojawi się przycisk
-          color: colors.text,
-        }}
-      >
-        {rollingText}
-      </AppText>
+      {/* CONTENT */}
+      <View style={{ flex: 1, marginBottom: 10 }}>
+        <FlatList
+          data={[rollingText]}
+          keyExtractor={(_, i) => String(i)}
+          renderItem={() => (
+            <AppText
+              style={{
+                fontSize: 16,
+                textAlign: "center",
+                opacity: isFinishedRolling ? 1 : 0.6,
+                lineHeight: 22, // 🔥 fix tekstu
+              }}
+            >
+              {rollingText}
+            </AppText>
+          )}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "center",
+          }}
+        />
+      </View>
 
-      {/* PRZYCISK POJAWIA SIĘ TYLKO GDY KONIEC LOSOWANIA */}
+      {/* BUTTON */}
       {isFinishedRolling && (
         <TouchableOpacity
           onPress={() => {
             setIsRolling(false);
-            setIsFinishedRolling(false); // Reset na przyszłość
+            setIsFinishedRolling(false);
           }}
           style={{
-            width: "100%",
-            alignItems: "center",
-            paddingVertical: 14,
+            marginTop: 20,
+            padding: 12,
             borderRadius: radius.md,
             backgroundColor: colors.buttonConfirm,
+            width: "100%",
+            alignItems: "center",
           }}
         >
-          <AppText style={{ color: "#fff", fontWeight: "bold", textTransform: "uppercase" }}>
+          <AppText style={{ color: "#fff" }}>
             ok
           </AppText>
         </TouchableOpacity>

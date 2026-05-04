@@ -1,3 +1,4 @@
+import { colors } from "../../ui/theme";
 import { run } from "./db";
 
 export const initDb = () => {
@@ -56,7 +57,7 @@ run(`
 // default tag
 run(`
   INSERT OR IGNORE INTO challenge_tags (id, name, color, is_default)
-  VALUES (1, 'general', '#888', 1);
+  VALUES (1, 'general', '${colors.DEFAULT_TAG_COLOR}', 1);
 `);
 
   // MANY TO MANY
@@ -289,6 +290,43 @@ run(`
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 `);
+
+// =========================
+// SETTINGS
+// =========================
+
+
+run(`
+  CREATE TABLE IF NOT EXISTS settings (
+    key TEXT PRIMARY KEY,
+    value TEXT
+  );
+`);
+
+const defaults = [
+  // modules
+  ["module_HabitScreen", "1"],
+  ["module_MoodScreen", "1"],
+  ["module_GoalScreen", "1"],
+  ["module_ChallengeScreen", "1"],
+  ["module_TodoScreen", "1"],
+  ["module_SobrietyScreen", "1"],
+  ["module_NoteScreen", "1"],
+  ["module_GamificationScreen", "1"],
+
+  // badges
+  ["show_difficulty_badge", "1"],
+  ["show_priority_badge", "1"],
+  ["show_tag_badge", "1"],
+];
+
+defaults.forEach(([key, value]) => {
+  run(
+    `INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)`,
+    [key, value]
+  );
+});
+
 
   console.log("DB INIT OK");
   } catch (e) {

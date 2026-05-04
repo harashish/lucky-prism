@@ -18,6 +18,7 @@ export const colors = {
   buttonConfirm: "rgb(108, 103, 136)",
 
   inputBorder: "#908bab",
+  DEFAULT_TAG_COLOR: "#2e2b3cff",
 
   white: "#fff",
   muted: "#777",

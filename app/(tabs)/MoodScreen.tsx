@@ -154,7 +154,7 @@ export default function MoodScreen() {
                         fontWeight: "600",
                       }}
                     >
-                      {streak.current} days
+                      {streak.current} {streak.current === 1 ? "day" : "days"}
                     </AppText>
                   </View>
                 )}

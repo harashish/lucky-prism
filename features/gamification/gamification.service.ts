@@ -11,6 +11,7 @@ export function awardXp(event: GamificationEvent) {
       xp = calculateXp({
         module: "mood",
         difficulty: event.difficulty,
+        streak: event.streak,
       });
       source = "mood";
       break;

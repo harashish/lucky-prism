@@ -1,10 +1,8 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import {
   View,
   TouchableOpacity,
   FlatList,
-  Animated,
-  Easing,
 } from "react-native";
 import AppText from "../../ui/components/AppText";
 import { colors, fonts, radius, spacing } from "../../ui/theme";
@@ -16,7 +14,6 @@ import FloatingButton from "../../ui/components/FloatingButton";
 import FormButton from "../../ui/components/FormButton";
 import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 
 const PERIODS = ["daily", "weekly"] as const;
 type Period = typeof PERIODS[number];
@@ -72,17 +69,29 @@ export default function ChallengeScreen() {
 
   // random
 
+const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+const clearAllTimeouts = () => {
+  timeoutsRef.current.forEach(clearTimeout);
+  timeoutsRef.current = [];
+};
+
+useEffect(() => {
+  return () => clearAllTimeouts();
+}, []);
+
 const handleRandom = () => {
   if (hasActive) return;
   if (filteredDefinitions.length === 0) return;
+
+  clearAllTimeouts(); // 🔥 ważne — reset jeśli klikniesz 2x
 
   setIsRolling(true);
 
   const items = filteredDefinitions;
   let index = 0;
-  let speed = 50; // start szybko
+  let speed = 50;
   let totalTime = 0;
-
   const maxTime = 2000;
 
   const roll = () => {
@@ -91,23 +100,23 @@ const handleRandom = () => {
     index++;
 
     totalTime += speed;
-
-    // easing: im bliżej końca, tym wolniej
     speed *= 1.12;
 
     if (totalTime < maxTime) {
-      setTimeout(roll, speed);
+      const t = setTimeout(roll, speed);
+      timeoutsRef.current.push(t);
     } else {
-      // FINAL PICK
       const random =
         items[Math.floor(Math.random() * items.length)];
 
       setRollingText(random.title);
 
-      setTimeout(() => {
+      const t = setTimeout(() => {
         assign(random);
         setIsRolling(false);
       }, 600);
+
+      timeoutsRef.current.push(t);
     }
   };
 
@@ -335,14 +344,22 @@ const handleRandom = () => {
           </View>
         </ScrollView>
       ) : !isRolling && (
-        <FlatList
-          data={filteredDefinitions}
-          keyExtractor={(item) => String(item.id)}
-          contentContainerStyle={{ paddingBottom: 120 }}
-          renderItem={({ item }) => (
-            <ChallengeItem item={item} />
-          )}
-        />
+        filteredDefinitions.length === 0 ? (
+          <View style={{ alignItems: "center", marginTop: 50 }}>
+            <AppText style={{ color: colors.muted }}>
+              no challenges yet
+            </AppText>
+          </View>
+        ) : (
+          <FlatList
+            data={filteredDefinitions}
+            keyExtractor={(item) => String(item.id)}
+            contentContainerStyle={{ paddingBottom: 120 }}
+            renderItem={({ item }) => (
+              <ChallengeItem item={item} />
+            )}
+          />
+        )
       )}
 
       {/* ADD BUTTON */}

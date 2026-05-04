@@ -2,7 +2,6 @@ import { View, ScrollView } from "react-native";
 import AppText from "../../ui/components/AppText";
 import { useGamificationStore } from "../../features/gamification/gamification.store";
 import { colors, spacing, radius } from "../../ui/theme";
-import SectionLabel from "../../ui/components/SectionLabel";
 
 export default function GamificationScreen() {
   const { totalXp, currentLevel, logs } = useGamificationStore();
@@ -25,7 +24,7 @@ export default function GamificationScreen() {
           backgroundColor: colors.card,
           padding: spacing.l,
           borderRadius: radius.lg,
-          marginBottom: spacing.l,
+          marginBottom: 12,
         }}
       >
         {/* LEVEL INLINE */}
@@ -71,7 +70,8 @@ export default function GamificationScreen() {
           backgroundColor: colors.cardSecondary,
           padding: spacing.m,
           borderRadius: radius.md,
-          marginBottom: spacing.m,        
+          marginBottom: 12,   
+               
         }}
       >
         <AppText style={{ fontSize: 14, color: colors.muted}}>
@@ -88,16 +88,6 @@ export default function GamificationScreen() {
         >
           {totalXp} XP
         </AppText>
-      </View>
-
-      {/* ACTIVITY SECTION */}
-      <View
-        style={{
-          alignItems: "center",
-          marginBottom: 10,
-        }}
-      >
-          <SectionLabel>activity</SectionLabel>
       </View>
 
       {/* LOGS */}

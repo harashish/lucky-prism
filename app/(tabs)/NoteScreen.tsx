@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   View,
   TouchableOpacity,
@@ -34,8 +34,21 @@ export default function NotesScreen() {
   // RANDOM
   // =========================
 
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+    const clearAllTimeouts = () => {
+      timeoutsRef.current.forEach(clearTimeout);
+      timeoutsRef.current = [];
+    };
+
+    useEffect(() => {
+      return () => clearAllTimeouts();
+    }, []);
+
   const handleRandom = () => {
     if (list.length === 0) return;
+
+    clearAllTimeouts();
 
     setIsRolling(true);
 
@@ -52,15 +65,16 @@ export default function NotesScreen() {
       totalTime += speed;
       speed *= 1.15;
 
-      if (totalTime < maxTime) {
-        setTimeout(roll, speed);
-      } else {
-        const random =
-          list[Math.floor(Math.random() * list.length)];
+    if (totalTime < maxTime) {
+      const t = setTimeout(roll, speed);
+      timeoutsRef.current.push(t);
+    } else {
+      const random =
+        list[Math.floor(Math.random() * list.length)];
 
-        setRollingText(random.content);
-        setIsFinishedRolling(true);
-      }
+      setRollingText(random.content);
+      setIsFinishedRolling(true);
+    }
     };
 
     roll();
@@ -124,6 +138,12 @@ export default function NotesScreen() {
   }}
 >
   <Ionicons
+    name="dice-outline"
+    size={18}
+    color={colors.white}
+  />
+  <AppText style={{ marginHorizontal: 8 }}>Random Note</AppText>
+    <Ionicons
     name="dice-outline"
     size={18}
     color={colors.white}

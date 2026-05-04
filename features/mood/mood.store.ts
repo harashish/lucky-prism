@@ -14,11 +14,13 @@ type MoodState = {
   } | null;
 
   loadYear: (year: number) => void;
+  loadAll: () => void;
 
   addMood: (data: MoodEntry) => void;
   updateMood: (data: MoodEntry) => void;
   deleteMood: (id: number) => void;
 };
+
 
 export const useMoodStore = create<MoodState>((set, get) => ({
   entries: [],
@@ -34,6 +36,17 @@ export const useMoodStore = create<MoodState>((set, get) => ({
 
     set({ entries, streak });
   },
+
+  loadAll: () => {
+    const entries = moodRepo.getAll();
+    const streak = calculateStreak(entries);
+
+    set({
+      entries, // albo możesz zostawić puste jeśli UI ma być year-based
+      streak,
+    });
+  },
+
 
   // create / update entry
   addMood: (data) => {

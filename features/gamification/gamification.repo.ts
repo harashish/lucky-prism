@@ -47,19 +47,23 @@ export const gamificationRepo = {
 
   // LOGS
 
-  getLogs: (): XPLog[] => {
-    const rows = getAll(`
+  getLogs: (limit = 50): XPLog[] => {
+    const rows = getAll(
+      `
         SELECT * FROM xp_logs
         ORDER BY created_at DESC
-    `);
+        LIMIT ?
+      `,
+      [limit]
+    );
 
     return rows.map((r) => ({
-        id: r.id,
-        source: r.source,
-        xp: r.xp,
-        created_at: r.created_at,
+      id: r.id,
+      source: r.source,
+      xp: r.xp,
+      created_at: r.created_at,
     }));
-    },
+  },
 
   addLog: (log: { source: string; xp: number }) => {
     run(

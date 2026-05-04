@@ -6,8 +6,8 @@ export const MODULE_MULTIPLIER = {
   habit: 1,
   mood: 0.5,
   goal: 1.5,
-  challenge: 2,
-  todo: 1,
+  challenge: 1,
+  todo: 0.5,
 } as const;
 
 export type Module = keyof typeof MODULE_MULTIPLIER;
@@ -24,5 +24,5 @@ export const GOAL_PERIOD_MULTIPLIER: Record<GoalPeriod, number> = {
 // CHALLENGE
 export const CHALLENGE_PERIOD_MULTIPLIER: Record<ChallengePeriod, number> = {
   daily: 1,
-  weekly: 3,
+  weekly: 2,
 };

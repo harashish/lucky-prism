@@ -14,6 +14,7 @@ import { DELETE_TAG_ERROR_MESSAGES } from "../../features/challenge/challenge.se
 
 
 const colorPalette = [
+  colors.DEFAULT_TAG_COLOR,
   "#6C5CE7",
   "#00B894",
   "#E17055",
@@ -45,6 +46,7 @@ export default function TagFormScreen() {
     if (!tag) return;
 
     setName(tag.name);
+    setColor(tag.color ?? colors.cardSecondary);
   }, [id]);
 
   const handleSubmit = () => {

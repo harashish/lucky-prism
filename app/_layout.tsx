@@ -10,17 +10,36 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useFonts } from "expo-font";
 import { fontsToLoad } from "../ui/theme/fonts";
+import { useMoodStore } from "../features/mood/mood.store";
+import { useSettingsStore } from "../features/settings/settings.store";
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
   const [fontsLoaded] = useFonts(fontsToLoad);
 
   // initialize database before any screen renders
-  useEffect(() => {
+  /*useEffect(() => {
   initDb();
     useGamificationStore.getState().init();
+    useMoodStore.getState().loadAll();
+    useSettingsStore.getState().load();
     setReady(true);
+  }, []);*/
+
+  useEffect(() => {
+  const init = async () => {
+      await initDb();
+      await Promise.all([
+        useGamificationStore.getState().init(),
+        useMoodStore.getState().loadAll(),
+        useSettingsStore.getState().load(),
+      ]);
+      setReady(true);
+    };
+
+    init();
   }, []);
+
 
   const AppTheme = {
     ...DarkTheme,

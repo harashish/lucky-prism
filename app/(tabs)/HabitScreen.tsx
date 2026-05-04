@@ -107,7 +107,7 @@ export default function HabitScreen() {
           }}
         >
           <AppText style={{ color: colors.muted, fontSize: 16 }}>
-            no habits yet, add some!
+            no habits yet
           </AppText>
         </View>
         

@@ -19,9 +19,6 @@ export default function HabitItem({ item, onToggleToday, onToggleDay }: HabitPro
 
   const days = item.days || [];
 
-  const difficultyColor =
-     colors.difficulty[item.difficulty];
-
   return (
     <Pressable
       onPress={() => setExpanded(prev => !prev)}
@@ -37,39 +34,54 @@ export default function HabitItem({ item, onToggleToday, onToggleDay }: HabitPro
         { opacity: pressed ? 0.9 : 1 }
       ]}
     >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-      <View style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <AppText style={{ fontFamily: fonts.interBold, fontSize: 15 }}>
-          {item.title}
-        </AppText>
+<View
+  style={{
+    flexDirection: "row",
+    alignItems: "center",
+                marginBottom: 12,
+  }}
+>
+  {/* LEFT: TITLE + BADGE */}
+  <View
+    style={{
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+      
+    }}
+  >
+    <AppText
+      style={{
+        fontFamily: fonts.interBold,
+        fontSize: 15,
+      }}
+    >
+      {item.title}
+    </AppText>
 
-        <DifficultyBadge difficulty={item.difficulty} />
-      </View>
+    <DifficultyBadge difficulty={item.difficulty} />
+  </View>
 
-        <Pressable
-            onPress={() => onToggleToday(item.id!)}
-            onLongPress={() => router.push(`/habit/${item.id!}`)}
-          style={{
-            width: 38,
-            height: 38,
-            borderRadius: radius.md,
-            marginRight: 10,
-            marginBottom: 12,
-            backgroundColor: item.color || colors.buttonActive,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <AppText style={{ color: colors.white, fontSize: 16 }}>+</AppText>
-        </Pressable>
+  {/* RIGHT: BUTTON */}
+  <Pressable
+    onPress={() => onToggleToday(item.id!)}
+    onLongPress={() => router.push(`/habit/${item.id!}`)}
+    style={{
+      width: 38,
+      height: 38,
+      borderRadius: radius.md,
 
-      </View>
+      backgroundColor: item.color || colors.buttonActive,
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <AppText style={{ color: colors.white, fontSize: 16 }}>
+      +
+    </AppText>
+  </Pressable>
+</View>
 
 {expanded && (
   <>

@@ -128,6 +128,7 @@ export default function CategoryFormScreen() {
         </FormSection>
 
         {/* COLOR */}
+        {/*
         <FormSection title="Color">
           <View style={{ flexDirection: "row" }}>
             {colorPalette.map(c => (
@@ -147,6 +148,7 @@ export default function CategoryFormScreen() {
             ))}
           </View>
         </FormSection>
+        */}
 
         <FormButton label="Save" onPress={handleSubmit} />
 
