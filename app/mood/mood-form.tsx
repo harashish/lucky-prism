@@ -294,20 +294,24 @@ export default function MoodFormScreen() {
             value={note}
             onChange={setNote}
             multiline
+            placeholder={"How did today feel?\nWhat influenced your mood?\nWhat would you like to remember?\nWhat you are proud of and what you want to improve?"}
+            inputStyle={{ minHeight: 500 }}
           />
         </FormSection>
 
-        {/* SAVE */}
-        <FormButton label="Save" onPress={handleSubmit} />
+        <View style={{ marginTop: 100 }}>
+          {/* SAVE */}
+          <FormButton label="Save" onPress={handleSubmit} />
 
-        {/* DELETE */}
-        {existing && (
-          <FormButton
-            label="Delete"
-            variant="danger"
-            onPress={handleDelete}
-          />
-        )}
+          {/* DELETE */}
+          {existing && (
+            <FormButton
+              label="Delete"
+              variant="danger"
+              onPress={handleDelete}
+            />
+          )}
+        </View>
       </ScrollView>
       <FormErrorModal
         visible={!!error}

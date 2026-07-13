@@ -222,6 +222,8 @@ const renderItem = ({ item }: any) => {
       <TextInput
         value={editingText}
         onChangeText={setEditingText}
+        multiline
+        scrollEnabled={false}
         cursorColor={colors.accent}
         selectionColor={colors.accent}
         autoFocus
@@ -241,6 +243,7 @@ const renderItem = ({ item }: any) => {
         }}
         style={{
           color: colors.text,
+          textAlignVertical: "top",
         }}
       />
     ) : (

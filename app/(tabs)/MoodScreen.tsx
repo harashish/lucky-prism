@@ -7,6 +7,7 @@ import { useRouter, useFocusEffect } from "expo-router";
 import AppText from "../../ui/components/AppText";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MOOD_COLORS } from "../../features/mood/mood.constants";
+import { moodRepo } from "../../features/mood/mood.repo";
 
 // poza komponentem, bo to stała + typ, nie zależy od renderu
 // gdyby było w środku to było by tworzone przy każdym renderze, a tak jest tylko raz
@@ -73,6 +74,17 @@ export default function MoodScreen() {
 
   const daysInMonth = (year: number, month: number) =>
     new Date(year, month + 1, 0).getDate();
+
+  const handleAddToday = () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const entry = moodRepo.getByDate(today);
+
+    router.push(
+      entry?.id
+        ? `/mood/mood-form?id=${entry.id}`
+        : "/mood/mood-form"
+    );
+  };
 
   return (
     <View style={{ flex: 1, padding: 12, backgroundColor: colors.background }}>
@@ -289,7 +301,7 @@ export default function MoodScreen() {
 
       {/* ADD BUTTON */}
       <FloatingButton
-        onPress={() => router.push("/mood/mood-form")}
+        onPress={handleAddToday}
       />
     </View>
   );

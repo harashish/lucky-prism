@@ -142,13 +142,15 @@ deleteCategory(id: number) {
         "id" | "order" | "created_at" | "updated_at" | "is_completed" | "completed_at"
       >
     ): number {
-    // max order w kategorii
-    const max = db.getFirstSync<{ max: number }>(
-      `SELECT MAX("order") as max FROM todo_tasks WHERE category_id = ?`,
+    // Przesuwamy istniejące zadania, aby nowe zawsze trafiało na początek listy.
+    db.runSync(
+      `UPDATE todo_tasks
+       SET "order" = "order" + 1
+       WHERE category_id = ?`,
       [data.category_id]
-    )?.max;
+    );
 
-    const nextOrder = max == null ? 0 : max + 1;
+    const nextOrder = 0;
 
     const now = new Date().toISOString();
 
